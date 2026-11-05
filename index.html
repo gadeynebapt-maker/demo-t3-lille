@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>html, body { height: 100%; margin: 0; } [hidden] { display: none !important; }</style>
+<meta charset="utf-8">
 <title>T3 rénové à Lille</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -465,7 +466,7 @@ function tween(dur, fn, done) { tweens.push({ t0: performance.now(), dur: REDUCE
 function each(names, fn) { names.forEach((n) => (parts[n] || []).forEach(fn)); }
 const UP = ["Cuit_immeuble_haut", "Vitrages_haut", "Cuit_plafond"];
 const DOWN = ["Cuit_immeuble_bas", "Vitrages_bas"];
-const AWAY = ["Cuit_voisinage", "Vitrages_voisinage", "Sol lointain"];
+const AWAY = ["Cuit_voisinage", "Cuit_rue", "Cuit_voisins", "Cuit_en_face", "Vitrages_voisinage", "Sol lointain"];
 
 function setExploded(on, instant = false) {
   tweens.length = 0;   // une animation en cours s'arrête

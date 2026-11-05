@@ -32,16 +32,6 @@
  {
   "model": "potted_plant_04",
   "pos": [
-   8.82,
-   7.13,
-   -2.62
-  ],
-  "rot": 0.0,
-  "scale": 0.7
- },
- {
-  "model": "potted_plant_04",
-  "pos": [
    6.2,
    7.48,
    -5.42
