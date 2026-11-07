@@ -121,8 +121,10 @@
     .facts, .hint { display: none; }
     .room { top: auto; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
     .nav { bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
-    .actions { top: calc(16px + env(safe-area-inset-top, 0px)); bottom: auto; }
+    /* boutons sous la carte du bien (sinon ils la recouvrent), entrée au-dessus de l'étiquette de la pièce */
+    .actions { top: calc(104px + env(safe-area-inset-top, 0px)); bottom: auto; flex-direction: row; }
     .actions .credit { display: none; }
+    .enter { bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
   }
   @media (prefers-reduced-motion: reduce) { .veil, .loader, .bar span, .pill { transition: none; } }
 </style>
@@ -233,7 +235,11 @@ const STREET = { pos: B(5.6, -14.2, 0.12 + 1.65), look: B(5.6, 0, 7.2) };
 // ------------------------------------------------------------ rendu
 const canvas = document.getElementById("scene");
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+// Téléphone ou tablette : les textures pleine taille (≈ 2 Go en mémoire graphique) font fermer la page ;
+// on charge les copies en 2048 px du dossier mobile/ et on limite la finesse de l'écran
+const PHONE = matchMedia("(pointer: coarse)").matches || Math.min(screen.width, screen.height) < 820
+  || renderer.capabilities.maxTextureSize < 8192;
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, PHONE ? 1.5 : 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.NoToneMapping;   // textures déjà passées par le rendu Cycles
@@ -244,6 +250,7 @@ const camera = new THREE.PerspectiveCamera(68, window.innerWidth / window.innerH
 camera.rotation.order = "YXZ";
 
 const manager = new THREE.LoadingManager();
+if (PHONE) manager.setURLModifier((url) => url.replace(/(^|\/)(cuit_[^/]+\.jpg)$/, "$1mobile/$2"));
 const bar = document.getElementById("bar"), progress = document.getElementById("progress");
 manager.onProgress = (_u, done, total) => {
   const pct = Math.round(done / Math.max(total, 1) * 100);
